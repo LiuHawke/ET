@@ -26,28 +26,57 @@ namespace ET.Client
         {
             foreach (var kv in self.handlers)
             {
-                switch (kv.Value)
-                {
-                    case AssetOperationHandle handle:
-                        handle.Release();
-                        break;
-                    case AllAssetsOperationHandle handle:
-                        handle.Release();
-                        break;
-                    case SubAssetsOperationHandle handle:
-                        handle.Release();
-                        break;
-                    case RawFileOperationHandle handle:
-                        handle.Release();
-                        break;
-                    case SceneOperationHandle handle:
-                        if (!handle.IsMainScene())
-                        {
-                            handle.UnloadAsync();
-                        }
-                        break;
-                }
+                self.ReleaseHandler(kv.Value);
             }
+        }
+
+
+        public static void ReleaseHandler(this ResourcesLoaderComponent self,OperationHandleBase handleBase)
+        {
+            switch (handleBase)
+            {
+                case AssetOperationHandle handle:
+                    handle.Release();
+                    break;
+                case AllAssetsOperationHandle handle:
+                    handle.Release();
+                    break;
+                case SubAssetsOperationHandle handle:
+                    handle.Release();
+                    break;
+                case RawFileOperationHandle handle:
+                    handle.Release();
+                    break;
+                case SceneOperationHandle handle:
+                    if (!handle.IsMainScene())
+                    {
+                        handle.UnloadAsync();
+                    }
+                    break;
+            }
+        }
+        
+        public static  void UnLoadAssetSync(this ResourcesLoaderComponent self, string location) 
+        {
+            OperationHandleBase handler;
+            if (self.handlers.TryGetValue(location, out handler))
+            {
+                self.ReleaseHandler(handler);
+                self.handlers.Remove(location);
+            }
+        }
+
+        
+        public static  T LoadAssetSync<T>(this ResourcesLoaderComponent self, string location) where T: UnityEngine.Object
+        {
+            OperationHandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadAssetSync<T>(location);
+                
+                self.handlers.Add(location, handler);
+            }
+            return (T)((AssetOperationHandle)handler).AssetObject;
         }
 
         public static async ETTask<T> LoadAssetAsync<T>(this ResourcesLoaderComponent self, string location) where T: UnityEngine.Object
@@ -64,6 +93,7 @@ namespace ET.Client
                 self.handlers.Add(location, handler);
             }
             
+           
             return (T)((AssetOperationHandle)handler).AssetObject;
         }
         
