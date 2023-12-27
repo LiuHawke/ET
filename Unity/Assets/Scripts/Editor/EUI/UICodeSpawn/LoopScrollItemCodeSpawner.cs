@@ -9,7 +9,7 @@ using ET;
 
 public partial class UICodeSpawner
 {
-    static public void SpawnLoopItemCode(GameObject gameObject)
+    private static void SpawnLoopItemCode(GameObject gameObject)
     {
         Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
