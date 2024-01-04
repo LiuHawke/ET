@@ -11,10 +11,18 @@ namespace ET.Client
         {
             string account = request.Account;
             string password = request.Password;
-            
+            string address = request.Address;
             root.RemoveComponent<RouterAddressComponent>();
-            RouterAddressComponent routerAddressComponent =
-                    root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
+            RouterAddressComponent routerAddressComponent;
+            if (string.IsNullOrEmpty(address))
+            {
+                routerAddressComponent = root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
+            }
+            else
+            {
+                string[] parts = address.Split(':');
+                routerAddressComponent = root.AddComponent<RouterAddressComponent, string, int>(parts[0], int.Parse(parts[1]));
+            }
             await routerAddressComponent.Init();
             root.AddComponent<NetComponent, AddressFamily, NetworkProtocol>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, NetworkProtocol.UDP);
             root.GetComponent<FiberParentComponent>().ParentFiberId = request.OwnerFiberId;
