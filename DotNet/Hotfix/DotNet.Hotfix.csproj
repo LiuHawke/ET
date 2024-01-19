@@ -41,5 +41,10 @@
         <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="..\..\Unity\Assets\Scripts\Hotfix\Server\Demo\UnitCache\Handler\">
+        <Link>Server\Demo\UnitCache\Handler</Link>
+      </Folder>
+    </ItemGroup>
 
 </Project>

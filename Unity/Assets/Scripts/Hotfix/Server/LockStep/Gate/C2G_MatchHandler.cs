@@ -9,8 +9,7 @@
 
 			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Match;
 
-			await session.Root().GetComponent<MessageSender>().Call(startSceneConfig.ActorId,
-				new G2Match_Match() { Id = player.Id });
+			await session.Root().GetComponent<MessageSender>().Call(startSceneConfig.ActorId, new G2Match_Match() { Id = player.Id });
 		}
 	}
 }
