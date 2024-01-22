@@ -735,7 +735,7 @@ namespace ET
 	[MemoryPackable]
 	public partial class Other2UnitCache_AddOrUpdateUnit: MessageObject, IRequest
 	{
-		public static Other2UnitCache_AddOrUpdateUnit Create(bool isFromPool = true) 
+		public static Other2UnitCache_AddOrUpdateUnit Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(Other2UnitCache_AddOrUpdateUnit), isFromPool) as Other2UnitCache_AddOrUpdateUnit; 
 		}
@@ -769,7 +769,7 @@ namespace ET
 	[MemoryPackable]
 	public partial class UnitCache2Other_AddOrUpdateUnit: MessageObject, IResponse
 	{
-		public static UnitCache2Other_AddOrUpdateUnit Create(bool isFromPool = true) 
+		public static UnitCache2Other_AddOrUpdateUnit Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(UnitCache2Other_AddOrUpdateUnit), isFromPool) as UnitCache2Other_AddOrUpdateUnit; 
 		}
@@ -801,7 +801,7 @@ namespace ET
 	[MemoryPackable]
 	public partial class Other2UnitCache_GetUnit: MessageObject, IRequest
 	{
-		public static Other2UnitCache_GetUnit Create(bool isFromPool = true) 
+		public static Other2UnitCache_GetUnit Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(Other2UnitCache_GetUnit), isFromPool) as Other2UnitCache_GetUnit; 
 		}
@@ -831,7 +831,7 @@ namespace ET
 	[MemoryPackable]
 	public partial class UnitCache2Other_GetUnit: MessageObject, IResponse
 	{
-		public static UnitCache2Other_GetUnit Create(bool isFromPool = true) 
+		public static UnitCache2Other_GetUnit Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(UnitCache2Other_GetUnit), isFromPool) as UnitCache2Other_GetUnit; 
 		}
@@ -846,7 +846,7 @@ namespace ET
 		public string Message { get; set; }
 
 		[MemoryPackOrder(3)]
-		public List<byte[]> EnityList { get; set; } = new();
+		public List<byte[]> EntityList { get; set; } = new();
 
 		[MemoryPackOrder(4)]
 		public List<string> ComponentNameList { get; set; } = new();
@@ -857,7 +857,7 @@ namespace ET
 			this.RpcId = default;
 			this.Error = default;
 			this.Message = default;
-			this.EnityList.Clear();
+			this.EntityList.Clear();
 			this.ComponentNameList.Clear();
 			
 			ObjectPool.Instance.Recycle(this); 
@@ -871,7 +871,7 @@ namespace ET
 	[MemoryPackable]
 	public partial class Other2UnitCache_DeleteUnit: MessageObject, IRequest
 	{
-		public static Other2UnitCache_DeleteUnit Create(bool isFromPool = true) 
+		public static Other2UnitCache_DeleteUnit Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(Other2UnitCache_DeleteUnit), isFromPool) as Other2UnitCache_DeleteUnit; 
 		}
@@ -897,7 +897,7 @@ namespace ET
 	[MemoryPackable]
 	public partial class UnitCache2Other_DeleteUnit: MessageObject, IResponse
 	{
-		public static UnitCache2Other_DeleteUnit Create(bool isFromPool = true) 
+		public static UnitCache2Other_DeleteUnit Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(UnitCache2Other_DeleteUnit), isFromPool) as UnitCache2Other_DeleteUnit; 
 		}

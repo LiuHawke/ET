@@ -208,7 +208,7 @@ message UnitCache2Other_GetUnit // IResponse
 	int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
-	repeated bytes EnityList = 4;
+	repeated bytes EntityList = 4;
 	repeated string ComponentNameList = 5;
 }
 
