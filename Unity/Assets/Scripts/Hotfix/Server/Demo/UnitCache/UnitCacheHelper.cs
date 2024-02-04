@@ -15,8 +15,7 @@ namespace ET.Server
         {
             Other2UnitCache_AddOrUpdateUnit request = Other2UnitCache_AddOrUpdateUnit.Create();
             request.UnitId = self.Id;
-            request.EntityTypes.Add(typeof (T).FullName);
-            request.EntityBytes.Add(self.ToBson());
+            request.Entitys.Add(self.ToBson());
 
             await self.Root().GetComponent<MessageSender>().Call(StartSceneConfigCategory.Instance.UnitCache.ActorId, request);
         }
@@ -30,7 +29,8 @@ namespace ET.Server
         public static async ETTask<Unit> GetUnitCache(Scene scene, long unitId)
         {
             Other2UnitCache_GetUnit message = Other2UnitCache_GetUnit.Create();
-            UnitCache2Other_GetUnit queryUnit = (UnitCache2Other_GetUnit) await scene.GetComponent<MessageSender>().Call(StartSceneConfigCategory.Instance.UnitCache.ActorId, message);
+            message.UnitId = unitId;
+            UnitCache2Other_GetUnit queryUnit = (UnitCache2Other_GetUnit) await scene.Root().GetComponent<MessageSender>().Call(StartSceneConfigCategory.Instance.UnitCache.ActorId, message);
             if (queryUnit.Error != ErrorCode.ERR_Success || queryUnit.EntityList.Count <= 0)
             {
                 return null;
@@ -94,15 +94,13 @@ namespace ET.Server
         {
             Other2UnitCache_AddOrUpdateUnit request = Other2UnitCache_AddOrUpdateUnit.Create();
             request.UnitId = unit.Id;
-            
-            request.EntityTypes.Add(unit.GetType().FullName);
-            request.EntityBytes.Add(unit.ToBson());
+            request.Entitys.Add(unit.ToBson());
             
             foreach (Entity entity in unit.Components.Values)
             {
                 if (entity is IUnitCache)
                 {
-                    request.EntityBytes.Add(entity.ToBson());
+                    request.Entitys.Add(entity.ToBson());
                 }
                 
             }

@@ -747,18 +747,14 @@ namespace ET
 		public long UnitId { get; set; }
 
 		[MemoryPackOrder(2)]
-		public List<string> EntityTypes { get; set; } = new();
-
-		[MemoryPackOrder(3)]
-		public List<byte[]> EntityBytes { get; set; } = new();
+		public List<byte[]> Entitys { get; set; } = new();
 
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
 			this.RpcId = default;
 			this.UnitId = default;
-			this.EntityTypes.Clear();
-			this.EntityBytes.Clear();
+			this.Entitys.Clear();
 			
 			ObjectPool.Instance.Recycle(this); 
 		}

@@ -45,5 +45,33 @@ namespace ET.Server
         {
             return self.GetComponent<AOIEntity>().GetBeSeePlayers();
         }
+
+        public static async ETTask<(bool, Unit)> LoadUnit(Player player)
+        {
+            player.RemoveComponent<GateMapComponent>();
+            // // 在Gate上动态创建一个Map Scene，把Unit从DB中加载放进来，然后传送到真正的Map中，这样登陆跟传送的逻辑就完全一样了
+            GateMapComponent gateMapComponent = player.AddComponent<GateMapComponent>();
+            gateMapComponent.Scene = await GateMapFactory.Create(gateMapComponent, player.Id, IdGenerater.Instance.GenerateInstanceId(), "GateMap");
+            
+            Scene scene = gateMapComponent.Scene;
+            
+            Unit unit = await UnitCacheHelper.GetUnitCache(scene, player.Id);
+            
+            bool isNewUnit = unit == null;
+            if (isNewUnit)
+            {
+                unit = UnitFactory.Create(gateMapComponent.Scene, player.Id, UnitType.Player);
+
+                UnitCacheHelper.AddOrUpdateUnitAllCache(scene, unit);
+            }
+            
+            return (isNewUnit, unit);
+        }
+        
+        public static async ETTask InitUnit(Unit unit, bool isNew)
+        {
+            unit.GetComponent<NumericComponent>().SetNoEvent(NumericType.BattleRandomSeed,TimeInfo.Instance.ServerNow());
+            await ETTask.CompletedTask;
+        }
     }
 }

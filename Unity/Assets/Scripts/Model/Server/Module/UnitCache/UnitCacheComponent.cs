@@ -2,10 +2,11 @@
 
 namespace ET.Server
 {
+    [ComponentOf(typeof(Scene))]
     public class UnitCacheComponent: Entity, IAwake, IDestroy
     {
-        public Dictionary<string, UnitCache> UnitCaches = new Dictionary<string, UnitCache>();
+        public Dictionary<string, UnitCache> UnitCachesDic = new Dictionary<string, UnitCache>();
 
-        public List<string> UnitCachekeyList = new List<string>();
+        public List<string> UnitCacheNameList = new List<string>();
     }
 }
